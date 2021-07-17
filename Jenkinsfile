@@ -4,7 +4,7 @@ pipeline {
         PROJECT_ID = 'PROJECT-ID'
         CLUSTER_NAME = 'CLUSTER-NAME'
         LOCATION = 'CLUSTER-LOCATION'
-        CREDENTIALS_ID = 'gke'
+        CREDENTIALS_ID = 'MyGcpProject 82449'
     }
     stages {
         stage("Checkout code") {
