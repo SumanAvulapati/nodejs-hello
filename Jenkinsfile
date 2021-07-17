@@ -1,10 +1,11 @@
 pipeline {
     agent any
     environment {
-        PROJECT_ID = 'PROJECT-ID'
-        CLUSTER_NAME = 'CLUSTER-NAME'
-        LOCATION = 'CLUSTER-LOCATION'
+        PROJECT_ID = 'MyGcpProject 82449'
+        CLUSTER_NAME = 'mygke-cluster-1'
+        LOCATION = 'asia-south1-c'
         CREDENTIALS_ID = 'MyGcpProject 82449'
+        APP_NAME = 'nodejs-hello'
     }
     stages {
         stage("Checkout code") {
@@ -15,7 +16,7 @@ pipeline {
         stage("Build image") {
             steps {
                 script {
-                    myapp = docker.build("DOCKER-HUB-USERNAME/hello:${env.BUILD_ID}")
+                    myapp = docker.build("gtaroadrash/${env.APP_NAME}:${env.BUILD_ID}")
                 }
             }
         }
@@ -31,7 +32,7 @@ pipeline {
         }        
         stage('Deploy to GKE') {
             steps{
-                sh "sed -i 's/hello:latest/hello:${env.BUILD_ID}/g' deployment.yaml"
+                sh "sed -i 's/hello:latest/${env.APP_NAME}:${env.BUILD_ID}/g' deployment.yaml"
                 step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
         }
