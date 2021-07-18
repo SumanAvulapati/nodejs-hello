@@ -6,7 +6,10 @@ metadata:
     app: nodejs-hello
 spec:
   strategy:
-  type: Recreate
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nodejs-hello
   template:
     metadata:
       labels:
@@ -29,10 +32,10 @@ metadata:
   labels:
     app: nodejs-hello
 spec:
-  ports:
-    - port: 5000
-      targetPort: 5000
   selector:
     app: nodejs-hello
     tier: nodejs-hello
+  ports:
+    - port: 5000
+      targetPort: 5000
   type: LoadBalancer
