@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         PROJECT_ID = 'mygcpproject-82449'
-        CLUSTER_NAME = 'mygke-cluster-1'
+        CLUSTER_NAME = 'cluster-1'
         LOCATION = 'asia-south1-c'
         CREDENTIALS_ID = 'MyGcpProject 82449'
         APP_NAME = 'nodejs-hello'
@@ -23,7 +23,7 @@ pipeline {
         stage("Push image") {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                    withDockerRegistry(credentialsId: 'dockerhub', url: 'https://registry.hub.docker.com') {
                             myapp.push("latest")
                             myapp.push("${env.BUILD_ID}")
                     }
